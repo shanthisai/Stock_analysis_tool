@@ -252,7 +252,7 @@ def download_index_data():
 if __name__ == "__main__":
     path = os.path.join(os.getcwd(), "NASDAQ_Data")
     df = pd.read_csv(os.path.join(path, "equity_data.csv"))
-    # download_index_data()
+    download_index_data()
     sorted_df = df.sort_values(by=["Market Cap"], ascending=False)
     symbols = sorted_df["Symbol"].values.tolist()
     no_data = ["HDB","RIO","SNY","UL","DEO","CVX","BHP","T"]
