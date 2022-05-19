@@ -13,9 +13,6 @@ from selenium.webdriver.support.wait import WebDriverWait
 def download_equity():
     path = os.path.join(os.getcwd(), "NASDAQ_Data")
 
-    if not os.path.exists(path):
-        os.makedirs("NASDAQ_Data")
-
     security_url = "https://www.nasdaq.com/market-activity/stocks/screener"
 
     # if os.path.exists(os.path.join(path, "Equity.csv")):
@@ -50,21 +47,20 @@ def download_equity():
 
 if __name__ == "__main__":
     path = os.path.join(os.getcwd(), "NASDAQ_Data")
+    if not os.path.exists(path):
+        os.makedirs("NASDAQ_Data")
     dir_list = os.listdir(path)
-    call_download = True
     for file in dir_list:
         if file.startswith("equity"):
-            print("File already exists.")
-            call_download = False
-            break
-    if call_download:
-        download_equity()
-        dir_list = os.listdir(path)
-        for file in dir_list:
-            if file.startswith("nasdaq"):
-                old_file = os.path.join(path, file)
-                new_file = os.path.join(path, "equity_data.csv")
-                os.rename(old_file, new_file)
+            os.remove(os.path.join(path,"equity_data.csv"))
+   
+    download_equity()
+    dir_list = os.listdir(path)
+    for file in dir_list:
+        if file.startswith("nasdaq"):
+            old_file = os.path.join(path, file)
+            new_file = os.path.join(path, "equity_data.csv")
+            os.rename(old_file, new_file)
     df = pd.read_csv(os.path.join(path, "equity_data.csv"))
     sorted_df = df.sort_values(by=["Market Cap"], ascending=False)
     os.remove(os.path.join(path,"equity_data.csv"))
