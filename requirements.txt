@@ -3,3 +3,4 @@ pandas
 bs4
 lxml
 scikit-learn
+os
