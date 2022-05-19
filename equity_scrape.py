@@ -27,7 +27,7 @@ def download_equity():
     chrome_options.add_argument(f'user-agent={user_agent}')
     chrome_options.add_experimental_option("prefs", {"download.default_directory": path})
     driver = webdriver.Chrome(
-        executable_path=r'./chromedriver.exe', options=chrome_options)
+        executable_path=r'./chromedriver', options=chrome_options)
     driver.maximize_window()
     driver.get(security_url)
     driver.find_element(By.XPATH,".//*[contains(text(),'Mega (>$200B)')]").click()
