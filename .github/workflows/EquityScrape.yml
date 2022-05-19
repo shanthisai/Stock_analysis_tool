@@ -28,8 +28,8 @@ jobs:
         python equity_scrape.py
     - name: Setup Github Config
       run: |
-        git config -- global user.name "shanthisai"
-        git config -- global.user.email "shanthisai07@msitprogram.net"
+        git config --global user.name "shanthisai"
+        git config --global user.email "shanthisai07@msitprogram.net"
     - name: Commiting New Files
       run: |
           git pull origin master
