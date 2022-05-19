@@ -53,6 +53,7 @@ if __name__ == "__main__":
     for file in dir_list:
         if file.startswith("equity"):
             os.remove(os.path.join(path,"equity_data.csv"))
+            break
    
     download_equity()
     dir_list = os.listdir(path)
@@ -61,6 +62,7 @@ if __name__ == "__main__":
             old_file = os.path.join(path, file)
             new_file = os.path.join(path, "equity_data.csv")
             os.rename(old_file, new_file)
+            break
     df = pd.read_csv(os.path.join(path, "equity_data.csv"))
     sorted_df = df.sort_values(by=["Market Cap"], ascending=False)
     os.remove(os.path.join(path,"equity_data.csv"))
