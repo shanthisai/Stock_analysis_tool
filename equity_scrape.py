@@ -5,6 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
 import pandas as pd
 import time
 from selenium.webdriver.support.wait import WebDriverWait
@@ -19,7 +20,7 @@ def download_equity():
     #     print("Equity.csv exists")
     #     return
 
-    chrome_options = Options()
+    chrome_options = webdriver.ChromeOptions()
     # chrome_options.add_argument("start-maximized")
     chrome_options.add_argument("--headless")
     chrome_options.add_argument('window-size=1920x1080')
@@ -27,7 +28,7 @@ def download_equity():
     chrome_options.add_argument(f'user-agent={user_agent}')
     chrome_options.add_experimental_option("prefs", {"download.default_directory": path})
     driver = webdriver.Chrome(
-        executable_path=r'./chromedriver', options=chrome_options)
+            ChromeDriverManager().install(), options=chrome_options)
     driver.maximize_window()
     driver.get(security_url)
     driver.find_element(By.XPATH,".//*[contains(text(),'Mega (>$200B)')]").click()
