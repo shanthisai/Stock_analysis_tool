@@ -5,9 +5,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from webdriver_manager.chrome import ChromeDriverManager
 import pandas as pd
 import time
-from sklearn.impute import KNNImputer
 
 download_path = os.path.join(os.getcwd(),"NASDAQ_Data","Revenue")
 if not os.path.exists(download_path):
@@ -16,15 +16,15 @@ basic_url = 'https://www.macrotrends.net'
 
 def create_driver():
 
-    chrome_options = Options()
+    chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("start-maximized")
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--log-level=3")
-    # chrome_options.add_argument('--no-sandbox')
-    # chrome_options.add_argument('--disable-dev-shm-usage')
     user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.50 Safari/537.36'
     chrome_options.add_argument(f'user-agent={user_agent}')
-    driver = webdriver.Chrome(executable_path= r'./chromedriver.exe',options=chrome_options)
+    driver = webdriver.Chrome(
+            ChromeDriverManager().install(), options=chrome_options)
+    driver.maximize_window()
     return driver
 
 def download_financial_data(name,symbol):
