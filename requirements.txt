@@ -1,0 +1,6 @@
+selenium 
+webdriver
+pandas
+bs4
+lxml
+scikit-learn
