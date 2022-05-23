@@ -266,7 +266,7 @@ for d in [30,60,90,180,360,720,1080]:
     sorted_df = df.sort_values(by=["Market Cap"], ascending=False)
     symbols = sorted_df["Symbol"].values.tolist()
     symbols = symbols[:101]
-    no_data = ["HDB","RIO","SNY","UL","DEO","CVX","BHP","T"]
+    no_data = ['BABA','HD','HDB','HSBC','PBR','RIO','SNY','UL','DXCM','LLY','KO','ORCL','BHP','T','UNP','DEO','BP','BTI','CM']
     for i in no_data:
         if i in symbols:
             symbols.remove(i)
