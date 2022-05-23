@@ -1,5 +1,6 @@
 import os
 from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 import pandas as pd
@@ -43,15 +44,15 @@ def download_risk_free_rate():
             chrome web driver.
         """
 
-        chrome_options = Options()
+        chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument("start-maximized")
         chrome_options.add_argument("--headless")
         # chrome_options.add_argument('window-size=1920x1080')
-        # user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.50 Safari/537.36'
-        # chrome_options.add_argument(f'user-agent={user_agent}')
+        user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.50 Safari/537.36'
+        chrome_options.add_argument(f'user-agent={user_agent}')
         chrome_options.add_experimental_option("prefs", {"download.default_directory": path})
         driver = webdriver.Chrome(
-            executable_path=r'./chromedriver.exe', options=chrome_options)
+            ChromeDriverManager().install(), options=chrome_options)
         return driver
 
     def download():
@@ -92,7 +93,7 @@ def download_risk_free_rate():
             risk_free.to_csv(os.path.join(path, "RiskFreeRateFull.csv"), index=None)
             os.remove(os.path.join(path,'daily-treasury-rates.csv'))
     year = 2022
-    while (year>=2019):
+    while (year>=2012):
         driver = create_driver()
         risk_free_rate_url = "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve&field_tdr_date_value="+str(year)
         driver.get(risk_free_rate_url)
