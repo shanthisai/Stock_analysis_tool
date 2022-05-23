@@ -255,7 +255,7 @@ if __name__ == "__main__":
     download_index_data()
     sorted_df = df.sort_values(by=["Market Cap"], ascending=False)
     symbols = sorted_df["Symbol"].values.tolist()
-    no_data = ["HDB","RIO","SNY","UL","DEO","CVX","BHP","T"]
+    no_data = ['BABA','HD','HDB','HSBC','PBR','RIO','SNY','UL','DXCM','LLY','KO','ORCL','BHP','T','UNP','DEO','BP','BTI','CM']
     for symbol in symbols[:101]:
         print(symbol)
         # try:
