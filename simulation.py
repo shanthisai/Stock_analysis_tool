@@ -109,7 +109,7 @@ symbols = sorted_df["Symbol"].values.tolist()
 names = sorted_df["Name"].values.tolist()
 names = names[:101]
 symbols = symbols[:101]
-no_data = ["HDB","RIO","SNY","UL","DEO","CVX","BHP","T"]
+no_data = ['BABA','HD','HDB','HSBC','PBR','RIO','SNY','UL','DXCM','LLY','KO','ORCL','BHP','T','UNP','DEO','BP','BTI','CM']
 for i in no_data:
     if i in symbols:
         sym_index = symbols.index(i)
