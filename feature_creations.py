@@ -189,7 +189,7 @@ def create_dividend(stock_df, dividend_df):
             mask = (stock_df['Date'] <= from_date) & (stock_df['Date'] >= last_date)
             stock_df["Dividend Value"].loc[mask] = stock_df["Dividend Value"].loc[mask].replace(0, amount)
         return stock_df
-    for row in range(rows):
+    for row in range(rows-1):
         to_date = dividend_df["Date"][row]
         amount = dividend_df["Dividends"][row]
         # print(amount)
