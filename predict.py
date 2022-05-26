@@ -269,6 +269,6 @@ for d in [30,60,90,180,360,720,1080]:
         if i in symbols:
             symbols.remove(i)
     # ray.init(ignore_reinit_error=True)
-    intial_run()
     filename = "next_{}_days.csv".format(days)
+    intial_run()
     create_files(days)
