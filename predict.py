@@ -1,4 +1,3 @@
-import ray
 import pandas as pd
 import numpy as np
 import os
@@ -8,7 +7,6 @@ from sklearn.linear_model import LinearRegression
 from sklearn.feature_selection import SequentialFeatureSelector
 from sklearn.pipeline import Pipeline
 from sklearn import metrics
-import traceback
 import warnings
 
 warnings.filterwarnings("ignore")
