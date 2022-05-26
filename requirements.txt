@@ -7,3 +7,4 @@ webdriver-manager
 yfinance
 yahoofinancials
 numpy
+warnings
