@@ -6,7 +6,7 @@ name: Feature Creation
 on:
   workflow_dispatch:
   schedule:
-    - cron: "35 21 * * 1-5"
+    - cron: "0 20 * * *"
 
 jobs:
   build:
