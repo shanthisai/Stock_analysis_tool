@@ -863,22 +863,26 @@ def close_price_as_percent_of_LV_HV_BA(stock, full_stock):
 
 def perform_operation(symbol):
     # try:
-        print("*******************************")
-        print(symbol)
-        print("*******************************")
-        index_df = pd.read_csv(os.path.join(path, "Index.csv"))
-        dividend_df = pd.read_csv(os.path.join(path, "Corporate_actions/Dividends/"+symbol+".csv"))
-        stock_split_df = pd.read_csv(os.path.join(path, "Corporate_actions/Stock_split/"+symbol + ".csv"))
-        revenue_df = pd.read_csv(os.path.join(path, "Revenue/"+symbol+".csv"))
-        stock_df = pd.read_csv(os.path.join(path, "Stock_data/"+symbol+".csv"))
-        # gr_stock_df = pd.read_csv(os.path.join(path, "GRStock/"+"gr"+symbol+".csv"))
-        riskfreerate_df = pd.read_csv(os.path.join(path, "RiskFreeRateFull.csv"))
-        # gr_stock_df['Date'] = pd.to_datetime(gr_stock_df['Date'])
-        stock_df['Date'] = pd.to_datetime(stock_df['Date'])
-        stock_df = stock_df.sort_values(by=["Date"], ascending=False, ignore_index=True)
-        # start = gr_stock_df.iloc[0]['Date']
-        end = stock_df.iloc[0]['Date']
-        start = (end - datetime.timedelta(days=3 * 365))
+    gr_flag = False
+    print("*******************************")
+    print(symbol)
+    print("*******************************")
+    index_df = pd.read_csv(os.path.join(path, "Index.csv"))
+    dividend_df = pd.read_csv(os.path.join(path, "Corporate_actions/Dividends/"+symbol+".csv"))
+    stock_split_df = pd.read_csv(os.path.join(path, "Corporate_actions/Stock_split/"+symbol + ".csv"))
+    revenue_df = pd.read_csv(os.path.join(path, "Revenue/" + symbol + ".csv"))
+    stock_df = pd.read_csv(os.path.join(path, "Stock_data/" + symbol + ".csv"))
+    riskfreerate_df = pd.read_csv(os.path.join(path, "RiskFreeRateFull.csv"))
+    stock_df['Date'] = pd.to_datetime(stock_df['Date'])
+    stock_df = stock_df.sort_values(by=["Date"], ascending=False, ignore_index=True)
+    end = stock_df.iloc[0]['Date']
+    if os.path.exists(os.path.join(path, "GRStock/" + "gr_" + symbol + ".csv")):
+        gr_stock_df = pd.read_csv(os.path.join(path, "GRStock/" + "gr_" + symbol + ".csv"))
+        gr_stock_df['Date'] = pd.to_datetime(gr_stock_df['Date'])
+        start = gr_stock_df.iloc[0]['Date']
+        gr_flag = True
+    else:
+        start = (end - datetime.timedelta(days=10 * 365))
         date_flag = False
         if str(start) < str(stock_df.iloc[0]['Date']):
             date_flag = True
@@ -896,57 +900,61 @@ def perform_operation(symbol):
                 if len(dates_index) == 1:
                     break
                 continue
-        print("start", start)
-        print("end", end)
-        full_stock = stock_df.copy()
-        # print("Full_stock")
-        # print(full_stock)
-        if start == end:
-            return
-        stock_df = stock_df[stock_df.Date.between(start, end)]
-        # stock_df["Date"] = pd.to_datetime(stock_df["Date"])
-        # mask = (stock_df['Date'] > '2021-01-04') & (stock_df['Date'] <= '2021-12-31')
-        # stock_df = stock_df.loc[mask]
-        if stock_df.shape[0] == 0:
-            return
-        stock_df = apply_corporate_actions(stock_df, dividend_df,stock_split_df)
-        # print("After corporate actions")
-        # print(stock_df)
-        stock_df = calculate_beta(stock_df, index_df, full_stock)
-        # print("BETA Calculated : ")
-        # print(stock_df["Beta"])
-        stock_df = add_risk_free_column(stock_df, riskfreerate_df, full_stock)
-        # print("Added Risk Free Rates")
-        # print(stock_df)
-        stock_df = calculate_alpha(stock_df, index_df, full_stock)
-        # print("Alpha Value")
-        # print(stock_df)
-        stock_df = create_lower_upper_bands(stock_df, full_stock)
-        # print("Lower and Upper bands")
-        # print(stock_df)
-        stock_df = create_new_LB_UB(stock_df, full_stock)
-        stock_df = create_eps_pe_ratio_revenue_income_expenditure_net_profit(revenue_df, stock_df)
-        stock_df = add_next_day_columns(stock_df, full_stock)
-        stock_df[direct_columns] = stock_df[direct_columns].apply(pd.to_numeric, errors="coerce")
-        stock_df = find_gain_loss(stock_df, full_stock)
-        stock_df = sequential_increase(stock_df, full_stock)
-        stock_df = sequential_decrease(stock_df, full_stock)
-        stock_df = sequential_increase_percentage(stock_df, full_stock)
-        stock_df = sequential_decrease_percentage(stock_df, full_stock)
-        stock_df = sequential_increase_decrease(stock_df, full_stock)
-        stock_df = stock_df.drop(columns=["Unnamed: 0"], axis=1, errors='ignore')
-        dividend_gr_df, div_gr_dict = dividend_growthrate(dividend_df)
-        stock_df = update_quarterwise_growth_rate(stock_df, revenue_df, dividend_gr_df)
-        stock_df = close_price_as_percent_of_LV_HV_BA(stock_df, full_stock)
-        # result = stock_df.append(gr_stock_df)
+    print("start", start)
+    print("end", end)
+    full_stock = stock_df.copy()
+    # print("Full_stock")
+    # print(full_stock)
+    if start == end:
+        return
+    stock_df = stock_df[stock_df.Date.between(start, end)]
+    # stock_df["Date"] = pd.to_datetime(stock_df["Date"])
+    # mask = (stock_df['Date'] > '2021-01-04') & (stock_df['Date'] <= '2021-12-31')
+    # stock_df = stock_df.loc[mask]
+    if stock_df.shape[0] == 0:
+        return
+    stock_df = apply_corporate_actions(stock_df, dividend_df,stock_split_df)
+    # print("After corporate actions")
+    # print(stock_df)
+    stock_df = calculate_beta(stock_df, index_df, full_stock)
+    # print("BETA Calculated : ")
+    # print(stock_df["Beta"])
+    stock_df = add_risk_free_column(stock_df, riskfreerate_df, full_stock)
+    # print("Added Risk Free Rates")
+    # print(stock_df)
+    stock_df = calculate_alpha(stock_df, index_df, full_stock)
+    # print("Alpha Value")
+    # print(stock_df)
+    stock_df = create_lower_upper_bands(stock_df, full_stock)
+    # print("Lower and Upper bands")
+    # print(stock_df)
+    stock_df = create_new_LB_UB(stock_df, full_stock)
+    stock_df = create_eps_pe_ratio_revenue_income_expenditure_net_profit(revenue_df, stock_df)
+    stock_df = add_next_day_columns(stock_df, full_stock)
+    stock_df[direct_columns] = stock_df[direct_columns].apply(pd.to_numeric, errors="coerce")
+    stock_df = find_gain_loss(stock_df, full_stock)
+    stock_df = sequential_increase(stock_df, full_stock)
+    stock_df = sequential_decrease(stock_df, full_stock)
+    stock_df = sequential_increase_percentage(stock_df, full_stock)
+    stock_df = sequential_decrease_percentage(stock_df, full_stock)
+    stock_df = sequential_increase_decrease(stock_df, full_stock)
+    stock_df = stock_df.drop(columns=["Unnamed: 0"], axis=1, errors='ignore')
+    dividend_gr_df, div_gr_dict = dividend_growthrate(dividend_df)
+    stock_df = update_quarterwise_growth_rate(stock_df, revenue_df, dividend_gr_df)
+    stock_df = close_price_as_percent_of_LV_HV_BA(stock_df, full_stock)
+    # result = stock_df.append(gr_stock_df)
+    if not os.path.exists(os.path.join(path, "GRStock")):
+        os.makedirs("NASDAQ_Data/GRStock")
+    if gr_flag:
+        result = pd.concat([gr_stock_df,stock_df],ignore_index=True)
+        result.drop_duplicates(subset="Date", keep='first', inplace=True)
+        result = result.sort_values(by=["Date"], ascending=False,ignore_index=True)
+        result.to_csv(os.path.join(path, "GRStock", "gr_" + symbol + ".csv"), index=None)
+    else:
         stock_df.drop_duplicates()
-        if not os.path.exists(os.path.join(path,"GRStock")):
-            os.makedirs("NASDAQ_Data/GRStock")
         stock_df.to_csv(os.path.join(path, "GRStock", "gr_" + symbol + ".csv"), index=None)
     # except:
     #     pass
-
-
 
 if __name__ == "__main__":
     path = os.path.join(os.getcwd(), "NASDAQ_Data")
