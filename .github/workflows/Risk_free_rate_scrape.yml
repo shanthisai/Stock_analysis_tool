@@ -6,7 +6,7 @@ name: Risk_free_rate_scrape
 on:
   workflow_dispatch:
   schedule:
-    - cron: "30 21 * * 1-5"
+    - cron: "31 19 * * *"
 
 jobs:
   build:
