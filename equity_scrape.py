@@ -19,17 +19,16 @@ def download_equity():
     # if os.path.exists(os.path.join(path, "Equity.csv")):
     #     print("Equity.csv exists")
     #     return
-
     chrome_options = webdriver.ChromeOptions()
-    # chrome_options.add_argument("start-maximized")
+    chrome_options.add_argument("start-maximized")
     chrome_options.add_argument("--headless")
-    chrome_options.add_argument('window-size=1920x1080')
+    # chrome_options.add_argument('window-size=1920x1080')
     user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.50 Safari/537.36'
     chrome_options.add_argument(f'user-agent={user_agent}')
     chrome_options.add_experimental_option("prefs", {"download.default_directory": path})
     driver = webdriver.Chrome(
-            ChromeDriverManager().install(), options=chrome_options)
-    driver.maximize_window()
+        ChromeDriverManager().install(), options=chrome_options)
+#     driver.maximize_window()
     driver.get(security_url)
     driver.find_element(By.XPATH,".//*[contains(text(),'Mega (>$200B)')]").click()
     driver.find_element(By.XPATH,".//*[contains(text(),'Large ($10B-$200B)')]").click()
@@ -50,11 +49,11 @@ if __name__ == "__main__":
     path = os.path.join(os.getcwd(), "NASDAQ_Data")
     if not os.path.exists(path):
         os.makedirs("NASDAQ_Data")
-    dir_list = os.listdir(path)
-    for file in dir_list:
-        if file.startswith("equity"):
-            os.remove(os.path.join(path,"equity_data.csv"))
-            break
+#     dir_list = os.listdir(path)
+#     for file in dir_list:
+#         if file.startswith("equity"):
+#             os.remove(os.path.join(path,"equity_data.csv"))
+#             break
    
     download_equity()
     dir_list = os.listdir(path)
