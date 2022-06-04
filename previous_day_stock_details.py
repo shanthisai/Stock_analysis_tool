@@ -21,6 +21,8 @@ flag = True
 prev_day_dict = {}
 for symbol in symbols[:101]:
     print(symbol)
+    if symbol in no_data:
+        continue
     each_stock_df = pd.read_csv(os.path.join(stock_data_path, symbol+".csv"))
     columns = each_stock_df.columns
     columns = columns[:-1]
