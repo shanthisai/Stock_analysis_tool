@@ -4,9 +4,10 @@
 name: Previous_day_stock_details
 
 on:
-  workflow_dispatch:
-  schedule:
-    - cron: "31 19 * * *"
+  workflow_run:
+    workflows: ["NASDAQ_Index_Equities_scrape"]
+    types:
+      - completed
 
 jobs:
   build:
