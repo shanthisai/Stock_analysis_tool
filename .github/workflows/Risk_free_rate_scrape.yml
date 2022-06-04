@@ -4,10 +4,9 @@
 name: Risk free rate scrape
 
 on:
-  workflow_run:
-    workflows: ["EquityScrape"]
-    types:
-      - completed
+  workflow_dispatch:
+  schedule:
+    - cron: "31 19 1 * *"
 
 jobs:
   build:
