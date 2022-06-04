@@ -42,4 +42,4 @@ for i in range(len(symbols[:101])):
 prev_df = pd.DataFrame.from_dict(prev_day_dict)
 if os.path.exists(os.path.join(path,"previous_day_stock_details.csv")):
     os.remove(os.path.join(path,"previous_day_stock_details.csv"))
-prev_df.to_csv(os.path.join(path,"previous_day_stock_details.csv"))
+prev_df.to_csv(os.path.join(path,"previous_day_stock_details.csv"),index=None)
