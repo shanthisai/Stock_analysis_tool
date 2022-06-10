@@ -139,8 +139,10 @@ def create_top_file(days):
                                                                                                      row[
                                                                                                          "maximum"] else None,
         axis=1)
-    sell = df.sort_values(by=["max"], ascending=[True])
-    buy = df.sort_values(by=["min"], ascending=[True])
+    sell_df = df[df.suggest == 'sell']
+    sell = sell_df.sort_values(by=["max"], ascending=[True])
+    buy_df = df[df.suggest == 'buy']
+    buy = buy_df.sort_values(by=["min"], ascending=[True])
     df.to_csv(os.path.join(toppath, spath), index=None)
     buy.to_csv(os.path.join(toppath, "buy_" + str(days) + ".csv"), index=None)
     sell.to_csv(os.path.join(toppath, "sell_" + str(days) + ".csv"), index=None)
