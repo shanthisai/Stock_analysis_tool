@@ -139,6 +139,7 @@ def create_top_file(days):
                                                                                                      row[
                                                                                                          "maximum"] else None,
         axis=1)
+    df.drop_duplicates(subset=["symbol"], keep="first", inplace=True)
     sell_df = df[df.suggest == 'sell']
     sell = sell_df.sort_values(by=["max"], ascending=[True])
     buy_df = df[df.suggest == 'buy']
