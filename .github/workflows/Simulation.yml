@@ -3,11 +3,15 @@
 
 name: Simulation
 
+# on:
+#   workflow_run:
+#     workflows: ["Predict"]
+#     types:
+#       - completed
 on:
-  workflow_run:
-    workflows: ["Predict"]
-    types:
-      - completed
+  workflow_dispatch:
+  schedule:
+    - cron: "05 20 * * *"
 
 jobs:
   build:
